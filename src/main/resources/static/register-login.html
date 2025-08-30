@@ -1,0 +1,458 @@
+// All by myself
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TrainLog Login / Register</title>
+  <style>
+   * { box-sizing: border-box; margin: 0; padding: 0; }
+/* Global styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  background: url('/img/fitness-login.jpg') center/cover no-repeat;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+/* Top-left title styles */
+.brand-title {
+  position: absolute;
+  top: 30px;
+  left: 40px;
+  font-size: 32px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  z-index: 10;
+}
+
+/* Workout status styles */
+.workout-status {
+  position: absolute;
+  top: 100px;
+  left: 40px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s infinite;
+  z-index: 10;
+}
+
+.status-label {
+  font-weight: 500;
+}
+
+.workout-timer {
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+/* Logo styles */
+.logo-icon {
+  width: 150px;
+  height: 50px;
+}
+
+/* Login area */
+.overlay {
+  margin-right: 8%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Form container */
+.form-container {
+  width: 320px;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Inputs and buttons */
+h1 { margin-bottom: 1rem; text-align: center; }
+input, button {
+  width: 100%;
+  padding: 0.6rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+/* Input styles */
+button {
+  background: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+/* Button hover */
+button:hover {
+  background: #005fa3;
+}
+/* Input styles */
+.result {
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #007700;
+}
+
+/* Register modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.95);
+  margin: 5% auto;
+  padding: 2rem;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.close {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #666;
+}
+
+.close:hover {
+  color: #000;
+}
+
+.modal h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: #0077cc;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.register-btn {
+  background: linear-gradient(135deg, #0077cc, #005fa3);
+  color: white;
+  padding: 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  transition: transform 0.2s;
+}
+
+.register-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 119, 204, 0.3);
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.success {
+  color: #388e3c;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  
+  .modal-content {
+    margin: 10% auto;
+    width: 95%;
+    padding: 1.5rem;
+  }
+}
+</style>
+</head>
+<body>
+  <!-- Top-left brand title -->
+ <div class="brand-title">
+  <img src="/img/logo.png" alt="Logo" class="logo-icon">
+  <span>TrainLog</span>
+</div>
+
+
+
+  <!-- Login area -->
+  <div class="overlay">
+    <div class="form-container">
+      <h1>Login / Register</h1>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="showRegisterModal()">Create account</button>
+      <button onclick="submitForm('login')">Login</button>
+      <div id="result" class="result"></div>
+    </div>
+  </div>
+
+  <!-- Register modal -->
+  <div id="registerModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeRegisterModal()">&times;</span>
+      <h2>Create new account</h2>
+      
+      <form id="registerForm" onsubmit="submitRegisterForm(event)">
+        <div class="form-group">
+          <label for="regUsername">Username *</label>
+          <input type="text" id="regUsername" required placeholder="Enter username">
+        </div>
+        
+        <div class="form-group">
+          <label for="regPassword">Password *</label>
+          <input type="password" id="regPassword" required placeholder="Enter password">
+        </div>
+        
+        <div class="form-group">
+          <label for="regConfirmPassword">Confirm password *</label>
+          <input type="password" id="regConfirmPassword" required placeholder="Re-enter password">
+        </div>
+        
+        <div class="form-group">
+          <label for="regEmail">Email</label>
+          <input type="email" id="regEmail" placeholder="Enter email address">
+        </div>
+        
+        <div class="form-group">
+          <label for="regNickname">Nickname</label>
+          <input type="text" id="regNickname" placeholder="Enter nickname">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regAge">Age</label>
+            <input type="number" id="regAge" min="1" max="120" placeholder="Age">
+          </div>
+          <div class="form-group">
+            <label for="regGender">Gender</label>
+            <select id="regGender">
+              <option value="">Please select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="regHeight">Height (cm)</label>
+            <input type="number" id="regHeight" min="100" max="250" step="0.1" placeholder="Height">
+          </div>
+          <div class="form-group">
+            <label for="regWeight">Weight (kg)</label>
+            <input type="number" id="regWeight" min="30" max="200" step="0.1" placeholder="Weight">
+          </div>
+        </div>
+        
+        <button type="submit" class="register-btn">Create account</button>
+        <div id="registerResult" class="result"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Init on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      // No-op
+    });
+
+    function submitForm(action) {
+      const u = document.getElementById('username').value.trim();
+      const p = document.getElementById('password').value.trim();
+      const res = document.getElementById('result');
+      if (!u || !p) { res.innerText = 'Please enter username and password'; return; }
+
+      fetch(`/api/auth/${action}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      })
+      .then(resp => resp.text())
+      .then(msg => {
+        res.innerText = msg;
+        if (msg.toLowerCase().includes('success')) {
+          // Save user info to local storage
+          const userData = {
+            username: u,
+            loginTime: new Date().toISOString()
+          };
+          localStorage.setItem('loggedInUser', JSON.stringify(userData));
+          localStorage.setItem('username', u);
+          setTimeout(() => {
+            window.location.href = '/main.html';
+          }, 1000);
+        }
+      })
+      .catch(() => res.innerText = 'Request failed, please try again later');
+    }
+
+    // Show register modal
+    function showRegisterModal() {
+      document.getElementById('registerModal').style.display = 'block';
+      document.getElementById('registerResult').innerText = '';
+    }
+
+    // Close register modal
+    function closeRegisterModal() {
+      document.getElementById('registerModal').style.display = 'none';
+      document.getElementById('registerForm').reset();
+    }
+
+    // Close when clicking outside modal
+    window.onclick = function(event) {
+      const modal = document.getElementById('registerModal');
+      if (event.target === modal) {
+        closeRegisterModal();
+      }
+    }
+
+    // Submit register form
+    function submitRegisterForm(event) {
+      event.preventDefault();
+      
+      const username = document.getElementById('regUsername').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
+      const email = document.getElementById('regEmail').value.trim();
+      const nickname = document.getElementById('regNickname').value.trim();
+      const age = document.getElementById('regAge').value;
+      const gender = document.getElementById('regGender').value;
+      const height = document.getElementById('regHeight').value;
+      const weight = document.getElementById('regWeight').value;
+      
+      const result = document.getElementById('registerResult');
+      
+      // Validate password
+      if (password !== confirmPassword) {
+        result.innerText = 'Passwords do not match';
+        result.className = 'error';
+        return;
+      }
+      
+      if (password.length < 6) {
+        result.innerText = 'Password must be at least 6 characters';
+        result.className = 'error';
+        return;
+      }
+      
+      // Build register payload
+      const registerData = {
+        username: username,
+        password: password,
+        email: email || null,
+        nickname: nickname || null,
+        age: age ? parseInt(age) : null,
+        gender: gender || null,
+        height: height ? parseFloat(height) : null,
+        weight: weight ? parseFloat(weight) : null
+      };
+      
+      // Send register request
+      fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(registerData)
+      })
+      .then(resp => resp.text())
+      .then(msg => {
+        result.innerText = msg;
+        if (msg.toLowerCase().includes('success')) {
+          result.className = 'success';
+          // Auto-fill login form after successful registration
+          document.getElementById('username').value = username;
+          document.getElementById('password').value = password;
+          setTimeout(() => {
+            closeRegisterModal();
+            result.innerText = '';
+          }, 2000);
+        } else {
+          result.className = 'error';
+        }
+      })
+      .catch(error => {
+        result.innerText = 'Registration failed, please try again later';
+        result.className = 'error';
+        console.error('Registration error:', error);
+      });
+    }
+  </script>
+</body>
+</html>
